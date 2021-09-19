@@ -22,7 +22,7 @@ class VisionObjectRecognitionViewController: ViewController {
     private var requests = [VNRequest]()
     private var gamePieces = [String: GamePieceTime]()
     
-    private let minConfidence: Float = 0.9
+    private let minConfidence: Float = 0.8
     private let msToAppear = 1000
     private let msToDisappear = 2000
     
