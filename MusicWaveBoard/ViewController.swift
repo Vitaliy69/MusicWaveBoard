@@ -77,7 +77,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             try videoDevice!.lockForConfiguration()
             let dimensions = CMVideoFormatDescriptionGetDimensions((videoDevice?.activeFormat.formatDescription)!)
             bufferSize.width = CGFloat(dimensions.width)
-            bufferSize.height = CGFloat(dimensions.height)
+            bufferSize.height = CGFloat(dimensions.height) - CGFloat((tabBarController?.tabBar.frame.height)!)
             videoDevice!.unlockForConfiguration()
         } catch {
             print(error)
@@ -101,6 +101,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     }
     
     func captureOutput(_ captureOutput: AVCaptureOutput, didDrop didDropSampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        // print("frame dropped")
+
     }
 }
