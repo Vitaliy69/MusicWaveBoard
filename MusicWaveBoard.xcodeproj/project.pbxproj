@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FAB417F62099308400494E9C /* VisionObjectRecognitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB417F52099308400494E9C /* VisionObjectRecognitionViewController.swift */; };
+		FAB417F62099308400494E9C /* QRObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB417F52099308400494E9C /* QRObjects.swift */; };
 		FAD5009F1ED668B60074D713 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD5009E1ED668B60074D713 /* AppDelegate.swift */; };
 		FAD500A11ED668B60074D713 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD500A01ED668B60074D713 /* ViewController.swift */; };
 		FAD500A41ED668B60074D713 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD500A21ED668B60074D713 /* Main.storyboard */; };
@@ -17,11 +17,10 @@
 		FEA5929C26F4E6F7005B805B /* SamplesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */; };
 		FEA5929E26F4E704005B805B /* RecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929D26F4E704005B805B /* RecordsViewController.swift */; };
 		FEA592A026F4E70E005B805B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929F26F4E70E005B805B /* SettingsViewController.swift */; };
-		FED7483126F4C059008953E2 /* model.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = FED7483026F4C059008953E2 /* model.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		FAB417F52099308400494E9C /* VisionObjectRecognitionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionObjectRecognitionViewController.swift; sourceTree = "<group>"; };
+		FAB417F52099308400494E9C /* QRObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRObjects.swift; sourceTree = "<group>"; };
 		FAD5009B1ED668B60074D713 /* MusicWaveBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicWaveBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAD5009E1ED668B60074D713 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAD500A01ED668B60074D713 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -33,7 +32,6 @@
 		FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesViewController.swift; sourceTree = "<group>"; };
 		FEA5929D26F4E704005B805B /* RecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsViewController.swift; sourceTree = "<group>"; };
 		FEA5929F26F4E70E005B805B /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		FED7483026F4C059008953E2 /* model.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = model.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +66,7 @@
 			children = (
 				FAD5009E1ED668B60074D713 /* AppDelegate.swift */,
 				FAD500A01ED668B60074D713 /* ViewController.swift */,
-				FAB417F52099308400494E9C /* VisionObjectRecognitionViewController.swift */,
+				FAB417F52099308400494E9C /* QRObjects.swift */,
 				FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */,
 				FEA5929D26F4E704005B805B /* RecordsViewController.swift */,
 				FEA5929F26F4E70E005B805B /* SettingsViewController.swift */,
@@ -77,7 +75,6 @@
 				FAD500A71ED668B60074D713 /* LaunchScreen.storyboard */,
 				FAD500A51ED668B60074D713 /* Assets.xcassets */,
 				FE778A1A26F4BE760055A8CA /* Info.plist */,
-				FED7483026F4C059008953E2 /* model.mlmodel */,
 			);
 			path = MusicWaveBoard;
 			sourceTree = "<group>";
@@ -155,11 +152,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAB417F62099308400494E9C /* VisionObjectRecognitionViewController.swift in Sources */,
+				FAB417F62099308400494E9C /* QRObjects.swift in Sources */,
 				FAD500A11ED668B60074D713 /* ViewController.swift in Sources */,
 				FEA592A026F4E70E005B805B /* SettingsViewController.swift in Sources */,
 				FEA5929C26F4E6F7005B805B /* SamplesViewController.swift in Sources */,
-				FED7483126F4C059008953E2 /* model.mlmodel in Sources */,
 				FAD5009F1ED668B60074D713 /* AppDelegate.swift in Sources */,
 				FE37572A26F8EB3D00A0BD83 /* VolumeView.swift in Sources */,
 				FEA5929E26F4E704005B805B /* RecordsViewController.swift in Sources */,
