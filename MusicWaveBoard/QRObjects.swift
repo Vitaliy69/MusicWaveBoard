@@ -91,7 +91,7 @@ class QRObjects: ViewController {
     }
     
     private func showGameChipActions(title: String) {
-        let alert = UIAlertController(title: title, message: "Please select an action", preferredStyle: .alert)
+        let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
         
         let volume = UIAlertAction(title: "Volume", style: .default, handler: { (UIAlertAction) in
             self.volumeView.center = self.view.center
@@ -118,6 +118,10 @@ class QRObjects: ViewController {
         
         alert.popoverPresentationController?.sourceView = self.view
         
+        alert.view.backgroundColor = UIColor.systemBlue
+        alert.view.tintColor = UIColor.systemOrange
+        alert.view.layer.cornerRadius = 14
+        
         self.present(alert, animated: true, completion: {
             
         })
@@ -127,7 +131,7 @@ class QRObjects: ViewController {
         let textLayer = CATextLayer()
         textLayer.name = identifier
         let formattedString = NSMutableAttributedString(string: String(format: "\(identifier)"))
-        let largeFont = UIFont(name: "Helvetica", size: 48.0)!
+        let largeFont = UIFont(name: "Helvetica", size: 36.0)!
         formattedString.addAttributes([NSAttributedString.Key.font: largeFont,
                                        NSAttributedString.Key.foregroundColor: UIColor.systemOrange],
                                       range: NSRange(location: 0, length: identifier.count))
@@ -148,7 +152,7 @@ class QRObjects: ViewController {
         shapeLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
         shapeLayer.name = identifier
         shapeLayer.backgroundColor = UIColor.systemBlue.cgColor
-        shapeLayer.cornerRadius = 10
+        shapeLayer.cornerRadius = 32
         
         let myImage = UIImage(named: "Guit")?.cgImage
         shapeLayer.contents = myImage
