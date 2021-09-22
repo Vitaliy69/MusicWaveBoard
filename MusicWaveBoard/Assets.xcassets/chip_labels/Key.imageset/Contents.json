@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "acoustic-guitar.png",
+      "filename" : "Key_only_a_.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "acoustic-guitar-1.png",
+      "filename" : "Key_only_a_-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "acoustic-guitar-2.png",
+      "filename" : "Key_only_a_-2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

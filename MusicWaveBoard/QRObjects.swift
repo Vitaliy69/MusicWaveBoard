@@ -7,55 +7,24 @@
 
 import UIKit
 import AVFoundation
-import Vision
 
-struct GamePieceTime {
-    var firstSeen: Int
-    var lastSeen: Int
-}
-
-class VisionObjectRecognitionViewController: ViewController {
+class QRObjects: ViewController {
     
     @IBOutlet var volumeView: UIView!
     
     private var detectionOverlay: CALayer! = nil
     
-    // Vision parts
-    private var requests = [VNRequest]()
-    private var gamePieces = [String: GamePieceTime]()
-    
     private let detectionOverlayName = "DetectionOverlay"
-    private var recordName = "mic.circle"
+    private var recordName = "Mic"
     
-    private let minConfidence: Float = 0.9
-    private let msToAppear = 1000
-    private let msToDisappear = 2000
-    
-    @discardableResult
-    func setupVision() -> NSError? {
-        // Setup Vision parts
-        let error: NSError! = nil
+    override func setupAVCapture() {
+        super.setupAVCapture()
         
-        guard let modelURL = Bundle.main.url(forResource: "model", withExtension: "mlmodelc") else {
-            return NSError(domain: "VisionObjectRecognitionViewController", code: -1, userInfo: [NSLocalizedDescriptionKey: "Model file is missing"])
-        }
-        do {
-            let visionModel = try VNCoreMLModel(for: MLModel(contentsOf: modelURL))
-            let objectRecognition = VNCoreMLRequest(model: visionModel, completionHandler: { (request, error) in
-                
-                DispatchQueue.main.async(execute: {
-                    // perform all the UI updates on the main queue
-                    if let results = request.results {
-                        self.drawVisionRequestResults(results)
-                    }
-                })
-            })
-            self.requests = [objectRecognition]
-        } catch let error as NSError {
-            print("Model loading went wrong: \(error)")
-        }
+        setupLayers()
+        drawMenu()
+        updateLayerGeometry()
         
-        return error
+        session.startRunning()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -65,11 +34,15 @@ class VisionObjectRecognitionViewController: ViewController {
             if let name = layer.name, name != detectionOverlayName {
                 if name == recordName {
                     switch name {
-                    case "mic.circle":
-                        self.recordName = "mic.circle.fill"
+                    case "Mic":
+                        self.recordName = "Mic_sel"
                     default:
-                        self.recordName = "mic.circle"
+                        self.recordName = "Mic"
                     }
+                    
+                    detectionOverlay.sublayers = nil
+                    drawMenu()
+                    updateLayerGeometry()
                 } else {
                     showGameChipActions(title: name)
                 }
@@ -77,7 +50,47 @@ class VisionObjectRecognitionViewController: ViewController {
         }
     }
     
-    func showGameChipActions(title: String) {
+    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        
+        drawVisibleQR(metadataObjects: metadataObjects)
+    }
+    
+    private func setupLayers() {
+        rootLayer = view.layer
+        previewLayer.frame = rootLayer.bounds
+        rootLayer.addSublayer(previewLayer)
+        
+        detectionOverlay = CALayer()
+        detectionOverlay.name = detectionOverlayName
+        detectionOverlay.bounds = CGRect(x: 0.0,
+                                         y: 0.0,
+                                         width: bufferSize.width,
+                                         height: bufferSize.height)
+        detectionOverlay.position = CGPoint(x: rootLayer.bounds.midX, y: rootLayer.bounds.midY)
+        rootLayer.addSublayer(detectionOverlay)
+    }
+    
+    private func updateLayerGeometry() {
+        let bounds = rootLayer.bounds
+        var scale: CGFloat
+        
+        let xScale: CGFloat = bounds.size.width / bufferSize.height
+        let yScale: CGFloat = bounds.size.height / bufferSize.width
+        
+        scale = fmax(xScale, yScale)
+        if scale.isInfinite {
+            scale = 1.0
+        }
+        CATransaction.begin()
+        CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
+        
+        detectionOverlay.setAffineTransform(CGAffineTransform(rotationAngle: CGFloat(.pi / 2.0)).scaledBy(x: scale, y: -scale))
+        detectionOverlay.position = CGPoint(x: bounds.midX, y: bounds.midY)
+        
+        CATransaction.commit()
+    }
+    
+    private func showGameChipActions(title: String) {
         let alert = UIAlertController(title: title, message: "Please select an action", preferredStyle: .alert)
         
         let volume = UIAlertAction(title: "Volume", style: .default, handler: { (UIAlertAction) in
@@ -106,153 +119,38 @@ class VisionObjectRecognitionViewController: ViewController {
         alert.popoverPresentationController?.sourceView = self.view
         
         self.present(alert, animated: true, completion: {
-
+            
         })
     }
     
-    func drawVisionRequestResults(_ results: [Any]) {
-        CATransaction.begin()
-        CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
-        detectionOverlay.sublayers = nil // remove all the old recognized objects
-        let now = Int(Date().timeIntervalSince1970 * 1000)
-        
-        for observation in results where observation is VNRecognizedObjectObservation {
-            guard let objectObservation = observation as? VNRecognizedObjectObservation else {
-                continue
-            }
-            // Select only the label with the highest confidence
-            let topLabelObservation = objectObservation.labels[0]
-        
-            let identifier = topLabelObservation.identifier
-            let confidence = topLabelObservation.confidence
-            
-            if (confidence < minConfidence) {
-                continue
-            }
-            
-            if gamePieces.keys.contains(identifier) {
-                var current = gamePieces[identifier]!
-                current.lastSeen = now
-                gamePieces[identifier] = current
-                
-                if (now - current.firstSeen < msToAppear) {
-                    continue
-                }
-            } else {
-                let gamePieceTime = GamePieceTime(firstSeen: now, lastSeen: now)
-                gamePieces[identifier] = gamePieceTime
-                continue
-            }
-            
-            let objectBounds = VNImageRectForNormalizedRect(objectObservation.boundingBox, Int(bufferSize.width), Int(bufferSize.height))
-            
-            let shapeLayer = self.createRoundedRectLayerWithBounds(objectBounds, identifier: identifier)
-            let textLayer = self.createTextSubLayerInBounds(objectBounds, identifier: identifier, confidence: confidence)
-            
-            shapeLayer.addSublayer(textLayer)
-            detectionOverlay.addSublayer(shapeLayer)
-        }
-        
-        // Add menu elements
-        let record = createMenuOverlay(CGRect(x: detectionOverlay.bounds.maxX - 95, y: detectionOverlay.bounds.maxY - 105, width: 32, height: 32), identifier: recordName)
-        detectionOverlay.addSublayer(record)
-        
-        for gp in gamePieces {
-            if (now - gp.value.lastSeen > msToAppear) {
-                gamePieces.removeValue(forKey: gp.key)
-            }
-        }
-        
-        self.updateLayerGeometry()
-        CATransaction.commit()
-    }
-    
-    override func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-            return
-        }
-        
-        let exifOrientation = CGImagePropertyOrientation.downMirrored
-        
-        let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: exifOrientation, options: [:])
-        do {
-            try imageRequestHandler.perform(self.requests)
-        } catch {
-            print(error)
-        }
-    }
-    
-    override func setupAVCapture() {
-        super.setupAVCapture()
-        
-        // setup Vision parts
-        setupLayers()
-        updateLayerGeometry()
-        setupVision()
-        
-        // start the capture
-        startCaptureSession()
-    }
-    
-    func setupLayers() {
-        detectionOverlay = CALayer() // container layer that has all the renderings of the observations
-        detectionOverlay.name = detectionOverlayName
-        detectionOverlay.bounds = CGRect(x: 0.0,
-                                         y: 0.0,
-                                         width: bufferSize.width,
-                                         height: bufferSize.height)
-        detectionOverlay.position = CGPoint(x: rootLayer.bounds.midX, y: rootLayer.bounds.midY)
-        rootLayer.addSublayer(detectionOverlay)
-    }
-    
-    func updateLayerGeometry() {
-        let bounds = rootLayer.bounds
-        var scale: CGFloat
-        
-        let xScale: CGFloat = bounds.size.width / bufferSize.height
-        let yScale: CGFloat = bounds.size.height / bufferSize.width
-        
-        scale = fmax(xScale, yScale)
-        if scale.isInfinite {
-            scale = 1.0
-        }
-        CATransaction.begin()
-        CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
-        
-        // rotate the layer into screen orientation and scale and mirror
-        detectionOverlay.setAffineTransform(CGAffineTransform(rotationAngle: CGFloat(.pi / 2.0)).scaledBy(x: scale, y: -scale))
-        // center the layer
-        detectionOverlay.position = CGPoint(x: bounds.midX, y: bounds.midY)
-        
-        CATransaction.commit()
-    }
-    
-    func createTextSubLayerInBounds(_ bounds: CGRect, identifier: String, confidence: VNConfidence) -> CATextLayer {
+    private func createTextSubLayerInBounds(_ bounds: CGRect, identifier: String) -> CATextLayer {
         let textLayer = CATextLayer()
         textLayer.name = identifier
         let formattedString = NSMutableAttributedString(string: String(format: "\(identifier)"))
-        let largeFont = UIFont(name: "Helvetica", size: 18.0)!
-        formattedString.addAttributes([NSAttributedString.Key.font: largeFont, NSAttributedString.Key.foregroundColor: UIColor.red], range: NSRange(location: 0, length: identifier.count))
+        let largeFont = UIFont(name: "Helvetica", size: 48.0)!
+        formattedString.addAttributes([NSAttributedString.Key.font: largeFont,
+                                       NSAttributedString.Key.foregroundColor: UIColor.systemOrange],
+                                      range: NSRange(location: 0, length: identifier.count))
         textLayer.string = formattedString
         textLayer.bounds = CGRect(x: 0, y: 0, width: bounds.size.height - 10, height: bounds.size.width - 10)
         textLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
         textLayer.shadowOpacity = 0.7
         textLayer.shadowOffset = CGSize(width: 1, height: 1)
-        textLayer.foregroundColor = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: [0.0, 0.0, 0.0, 1.0])
+        textLayer.foregroundColor = UIColor.systemOrange.cgColor
         textLayer.contentsScale = 2.0 // retina rendering
         
         return textLayer
     }
     
-    func createRoundedRectLayerWithBounds(_ bounds: CGRect, identifier: String) -> CALayer {
+    private func createRoundedRectLayerWithBounds(_ bounds: CGRect, identifier: String) -> CALayer {
         let shapeLayer = CALayer()
         shapeLayer.bounds = bounds
         shapeLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
         shapeLayer.name = identifier
-        shapeLayer.backgroundColor = CGColor(red: 0, green: 0, blue: 1, alpha: 0.5)
+        shapeLayer.backgroundColor = UIColor.systemBlue.cgColor
         shapeLayer.cornerRadius = 10
         
-        let myImage = UIImage(named: "acoustic-guitar")?.cgImage
+        let myImage = UIImage(named: "Guit")?.cgImage
         shapeLayer.contents = myImage
         
         // rotate the layer into screen orientation and scale
@@ -261,18 +159,56 @@ class VisionObjectRecognitionViewController: ViewController {
         return shapeLayer
     }
     
-    func createMenuOverlay(_ bounds: CGRect, identifier: String) -> CALayer {
+    private func createMenuOverlay(_ bounds: CGRect, identifier: String) -> CALayer {
         let shapeLayer = CALayer()
         shapeLayer.bounds = bounds
         shapeLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
         shapeLayer.name = identifier
         
-        let myImage = UIImage(systemName: identifier)?.cgImage
+        let myImage = UIImage(named: identifier)?.cgImage
         shapeLayer.contents = myImage
         
         // rotate the layer into screen orientation and scale
         shapeLayer.setAffineTransform(CGAffineTransform(rotationAngle: CGFloat(.pi / 2.0)).scaledBy(x: 1.0, y: -1.0))
         
         return shapeLayer
+    }
+    
+    private func drawMenu() {
+        let record = createMenuOverlay(CGRect(x: detectionOverlay.bounds.maxX - 280,
+                                              y: detectionOverlay.bounds.maxY - 200,
+                                              width: 96,
+                                              height: 96),
+                                       identifier: recordName)
+        
+        detectionOverlay.addSublayer(record)
+    }
+    
+    private func drawVisibleQR(metadataObjects: [AVMetadataObject]) {
+        detectionOverlay.sublayers = nil
+        
+        drawMenu()
+        
+        guard metadataObjects.count > 0 else { return }
+        
+        for object in metadataObjects {
+            if let o = object as? AVMetadataMachineReadableCodeObject {
+                if o.type == AVMetadataObject.ObjectType.qr {
+                    
+                    
+                    let objectBounds = CGRect(x: o.bounds.minX * bufferSize.width,
+                                              y: o.bounds.minY * bufferSize.height,
+                                              width: o.bounds.width * bufferSize.width,
+                                              height: o.bounds.height * bufferSize.height)
+                    let shapeLayer = createRoundedRectLayerWithBounds(objectBounds, identifier: o.stringValue!)
+                    let textLayer = createTextSubLayerInBounds(objectBounds, identifier: o.stringValue!)
+                    
+                    shapeLayer.addSublayer(textLayer)
+                    detectionOverlay.addSublayer(shapeLayer)
+                }
+            }
+        }
+        
+        updateLayerGeometry()
     }
 }
