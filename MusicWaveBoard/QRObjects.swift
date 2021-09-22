@@ -95,7 +95,7 @@ class QRObjects: ViewController {
         
         let volume = UIAlertAction(title: "Volume", style: .default, handler: { (UIAlertAction) in
             self.volumeView.center = self.view.center
-            self.volumeView.alpha = 1
+            self.volumeView.alpha = 0.8
             self.volumeView.transform = CGAffineTransform(scaleX: 0.8, y: 1.2)
             
             self.view.addSubview(self.volumeView)
@@ -118,7 +118,7 @@ class QRObjects: ViewController {
         
         alert.popoverPresentationController?.sourceView = self.view
         
-        alert.view.backgroundColor = UIColor.systemBlue
+        alert.view.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.8)
         alert.view.tintColor = UIColor.systemOrange
         alert.view.layer.cornerRadius = 14
         
@@ -151,7 +151,7 @@ class QRObjects: ViewController {
         shapeLayer.bounds = bounds
         shapeLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
         shapeLayer.name = identifier
-        shapeLayer.backgroundColor = UIColor.systemBlue.cgColor
+        shapeLayer.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.8).cgColor
         shapeLayer.cornerRadius = 32
         
         let myImage = UIImage(named: "Guit")?.cgImage
