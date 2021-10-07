@@ -12,6 +12,7 @@ class ViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     var previewLayer = AVCaptureVideoPreviewLayer()
     let session = AVCaptureSession()
+    let output = AVCaptureMetadataOutput()
     
     var rootLayer: CALayer! = nil
     var bufferSize: CGSize = .zero
@@ -45,7 +46,6 @@ class ViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
             fatalError(error.localizedDescription)
         }
         
-        let output = AVCaptureMetadataOutput()
         session.addOutput(output)
         
         output.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)

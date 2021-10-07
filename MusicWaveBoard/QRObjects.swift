@@ -14,8 +14,22 @@ class QRObjects: ViewController {
     
     private var detectionOverlay: CALayer! = nil
     
+    private weak var drawTimer: Timer?
+    private weak var changeRectTimer: Timer?
+    
     private let detectionOverlayName = "DetectionOverlay"
     private var recordName = "Mic"
+    
+    private var lastSeenPiece = [String: (bounds: CGRect, timestamp: Int)]()
+    private let aliveTimeMs = 1500
+    
+    private var searchRectNum = 0
+    private let searchRects = [ CGRect(x: 0, y: 0, width: 0.33, height: 1),
+                                CGRect(x: 0.165, y: 0, width: 0.33, height: 1),
+                                CGRect(x: 0.33, y: 0, width: 0.33, height: 1),
+                                CGRect(x: 0.495, y: 0, width: 0.33, height: 1),
+                                CGRect(x: 0.66, y: 0, width: 0.33, height: 1),
+                                CGRect(x: 0.825, y: 0, width: 0.165, height: 1)]
     
     override func setupAVCapture() {
         super.setupAVCapture()
@@ -25,6 +39,31 @@ class QRObjects: ViewController {
         updateLayerGeometry()
         
         session.startRunning()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        drawTimer = Timer.scheduledTimer(timeInterval: 0.1,
+                                           target: self,
+                                           selector: #selector(drawVisibleQR),
+                                           userInfo: nil,
+                                           repeats: true)
+        
+        changeRectTimer = Timer.scheduledTimer(timeInterval: 0.15,
+                                           target: self,
+                                           selector: #selector(changeSearchRect),
+                                           userInfo: nil,
+                                           repeats: true)
+        
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        drawTimer?.invalidate()
+        changeRectTimer?.invalidate()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -52,12 +91,16 @@ class QRObjects: ViewController {
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         
-        drawVisibleQR(metadataObjects: metadataObjects)
+        updateVisibleQR(metadataObjects: metadataObjects)
     }
     
     private func setupLayers() {
         rootLayer = view.layer
         previewLayer.frame = rootLayer.bounds
+        previewLayer.bounds = CGRect(x: 0.0,
+                                     y: 0.0,
+                                     width: bufferSize.width,
+                                     height: bufferSize.height)
         rootLayer.addSublayer(previewLayer)
         
         detectionOverlay = CALayer()
@@ -188,31 +231,51 @@ class QRObjects: ViewController {
         detectionOverlay.addSublayer(record)
     }
     
-    private func drawVisibleQR(metadataObjects: [AVMetadataObject]) {
-        detectionOverlay.sublayers = nil
-        
-        drawMenu()
-        
-        guard metadataObjects.count > 0 else { return }
+    private func updateVisibleQR(metadataObjects: [AVMetadataObject]) {
+        let now = Int(Date().timeIntervalSince1970 * 1000)
         
         for object in metadataObjects {
             if let o = object as? AVMetadataMachineReadableCodeObject {
-                if o.type == AVMetadataObject.ObjectType.qr {
-                    
+                if o.type == AVMetadataObject.ObjectType.qr, let name = o.stringValue {
                     
                     let objectBounds = CGRect(x: o.bounds.minX * bufferSize.width,
                                               y: o.bounds.minY * bufferSize.height,
                                               width: o.bounds.width * bufferSize.width,
                                               height: o.bounds.height * bufferSize.height)
-                    let shapeLayer = createRoundedRectLayerWithBounds(objectBounds, identifier: o.stringValue!)
-                    let textLayer = createTextSubLayerInBounds(objectBounds, identifier: o.stringValue!)
                     
-                    shapeLayer.addSublayer(textLayer)
-                    detectionOverlay.addSublayer(shapeLayer)
+                    lastSeenPiece[name] = (objectBounds, now)
                 }
+            }
+        }
+    }
+    
+    @objc private func drawVisibleQR() {
+        detectionOverlay.sublayers = nil
+        drawMenu()
+        
+        let now = Int(Date().timeIntervalSince1970 * 1000)
+        
+        for object in lastSeenPiece {
+            if object.value.timestamp + aliveTimeMs > now {
+                let shapeLayer = createRoundedRectLayerWithBounds(object.value.bounds, identifier: object.key)
+                let textLayer = createTextSubLayerInBounds(object.value.bounds, identifier: object.key)
+                
+                shapeLayer.addSublayer(textLayer)
+                detectionOverlay.addSublayer(shapeLayer)
+            } else {
+                lastSeenPiece.removeValue(forKey: object.key)
             }
         }
         
         updateLayerGeometry()
+    }
+    
+    @objc private func changeSearchRect() {
+        output.rectOfInterest = searchRects[searchRectNum]
+        if searchRectNum == searchRects.count - 1 {
+            searchRectNum = 0
+        } else {
+            searchRectNum += 1
+        }
     }
 }
