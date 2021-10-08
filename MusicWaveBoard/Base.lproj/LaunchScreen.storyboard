@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,17 +19,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WAVE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6l4-si-Jfg">
-                                <rect key="frame" x="103" y="406" width="208" height="84"/>
-                                <fontDescription key="fontDescription" name="PartyLetPlain" family="Party LET" pointSize="72"/>
-                                <color key="textColor" systemColor="systemOrangeColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="1F2-T0-tEk">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Wave" translatesAutoresizingMaskIntoConstraints="NO" id="6t8-Ym-dlO">
+                                <rect key="frame" x="32" y="384" width="350" height="128"/>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBlueColor"/>
                         <constraints>
-                            <constraint firstItem="6l4-si-Jfg" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Xht-ud-0My"/>
-                            <constraint firstItem="6l4-si-Jfg" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="o20-qJ-P9i"/>
+                            <constraint firstItem="1F2-T0-tEk" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="0qV-XH-vVs"/>
+                            <constraint firstItem="1F2-T0-tEk" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="3nK-6R-GnZ"/>
+                            <constraint firstItem="6t8-Ym-dlO" firstAttribute="centerY" secondItem="1F2-T0-tEk" secondAttribute="centerY" id="937-7A-eYB"/>
+                            <constraint firstItem="1F2-T0-tEk" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="-20" id="Mqy-UO-Orw"/>
+                            <constraint firstItem="1F2-T0-tEk" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="topMargin" constant="-44" id="gbN-lA-AiO"/>
+                            <constraint firstItem="6t8-Ym-dlO" firstAttribute="leading" secondItem="1F2-T0-tEk" secondAttribute="leading" constant="32" id="lQp-XH-dtj"/>
+                            <constraint firstItem="6t8-Ym-dlO" firstAttribute="trailing" secondItem="1F2-T0-tEk" secondAttribute="trailing" constant="-32" id="oIH-pZ-bu6"/>
+                            <constraint firstItem="6t8-Ym-dlO" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="340" id="wJD-bk-Poo"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -40,11 +44,7 @@
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <image name="Background" width="1241" height="1754"/>
+        <image name="Wave" width="1829" height="179"/>
     </resources>
 </document>

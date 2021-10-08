@@ -21,7 +21,7 @@ class QRObjects: ViewController {
     private var recordName = "Mic"
     
     private var lastSeenPiece = [String: (bounds: CGRect, timestamp: Int)]()
-    private let aliveTimeMs = 1500
+    private let aliveTimeMs = 2500
     
     private var searchRectNum = 0
     private let searchRects = [ CGRect(x: 0, y: 0, width: 0.33, height: 1),
@@ -50,7 +50,7 @@ class QRObjects: ViewController {
                                            userInfo: nil,
                                            repeats: true)
         
-        changeRectTimer = Timer.scheduledTimer(timeInterval: 0.15,
+        changeRectTimer = Timer.scheduledTimer(timeInterval: 0.2,
                                            target: self,
                                            selector: #selector(changeSearchRect),
                                            userInfo: nil,
