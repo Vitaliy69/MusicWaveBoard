@@ -13,6 +13,7 @@ class ViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     var previewLayer = AVCaptureVideoPreviewLayer()
     let session = AVCaptureSession()
     let output = AVCaptureMetadataOutput()
+    let loopPlayer = LoopPlayer()
     
     var rootLayer: CALayer! = nil
     var bufferSize: CGSize = .zero
@@ -22,6 +23,9 @@ class ViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
         
         UIApplication.shared.isIdleTimerDisabled = true
         setupAVCapture()
+        
+        loopPlayer.initDemo()
+        loopPlayer.start()
     }
     
     func setupAVCapture() {

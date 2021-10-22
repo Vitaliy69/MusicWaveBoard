@@ -17,6 +17,9 @@
 		FEA5929C26F4E6F7005B805B /* SamplesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */; };
 		FEA5929E26F4E704005B805B /* RecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929D26F4E704005B805B /* RecordsViewController.swift */; };
 		FEA592A026F4E70E005B805B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929F26F4E70E005B805B /* SettingsViewController.swift */; };
+		FEE5FFA92722D1D800D2BB0F /* Loops in Resources */ = {isa = PBXBuildFile; fileRef = FEE5FFA82722D1D800D2BB0F /* Loops */; };
+		FEE5FFAB2722D45200D2BB0F /* LoopStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE5FFAA2722D45200D2BB0F /* LoopStorage.swift */; };
+		FEE5FFAD2722D8B900D2BB0F /* LoopPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE5FFAC2722D8B900D2BB0F /* LoopPlayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesViewController.swift; sourceTree = "<group>"; };
 		FEA5929D26F4E704005B805B /* RecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsViewController.swift; sourceTree = "<group>"; };
 		FEA5929F26F4E70E005B805B /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		FEE5FFA82722D1D800D2BB0F /* Loops */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Loops; sourceTree = "<group>"; };
+		FEE5FFAA2722D45200D2BB0F /* LoopStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopStorage.swift; sourceTree = "<group>"; };
+		FEE5FFAC2722D8B900D2BB0F /* LoopPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopPlayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +54,7 @@
 		FAD500921ED668B60074D713 = {
 			isa = PBXGroup;
 			children = (
+				FEE5FFA82722D1D800D2BB0F /* Loops */,
 				FAD5009D1ED668B60074D713 /* MusicWaveBoard */,
 				FAD5009C1ED668B60074D713 /* Products */,
 			);
@@ -71,6 +78,8 @@
 				FEA5929D26F4E704005B805B /* RecordsViewController.swift */,
 				FEA5929F26F4E70E005B805B /* SettingsViewController.swift */,
 				FE37572926F8EB3D00A0BD83 /* VolumeView.swift */,
+				FEE5FFAC2722D8B900D2BB0F /* LoopPlayer.swift */,
+				FEE5FFAA2722D45200D2BB0F /* LoopStorage.swift */,
 				FAD500A21ED668B60074D713 /* Main.storyboard */,
 				FAD500A71ED668B60074D713 /* LaunchScreen.storyboard */,
 				FAD500A51ED668B60074D713 /* Assets.xcassets */,
@@ -141,6 +150,7 @@
 			files = (
 				FAD500A91ED668B60074D713 /* LaunchScreen.storyboard in Resources */,
 				FAD500A61ED668B60074D713 /* Assets.xcassets in Resources */,
+				FEE5FFA92722D1D800D2BB0F /* Loops in Resources */,
 				FAD500A41ED668B60074D713 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -155,10 +165,12 @@
 				FAB417F62099308400494E9C /* QRObjects.swift in Sources */,
 				FAD500A11ED668B60074D713 /* ViewController.swift in Sources */,
 				FEA592A026F4E70E005B805B /* SettingsViewController.swift in Sources */,
+				FEE5FFAB2722D45200D2BB0F /* LoopStorage.swift in Sources */,
 				FEA5929C26F4E6F7005B805B /* SamplesViewController.swift in Sources */,
 				FAD5009F1ED668B60074D713 /* AppDelegate.swift in Sources */,
 				FE37572A26F8EB3D00A0BD83 /* VolumeView.swift in Sources */,
 				FEA5929E26F4E704005B805B /* RecordsViewController.swift in Sources */,
+				FEE5FFAD2722D8B900D2BB0F /* LoopPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
