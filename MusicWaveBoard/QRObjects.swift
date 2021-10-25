@@ -262,8 +262,10 @@ class QRObjects: ViewController {
                 
                 shapeLayer.addSublayer(textLayer)
                 detectionOverlay.addSublayer(shapeLayer)
+                loopPlayer.turnOn(piece: object.key)
             } else {
                 lastSeenPiece.removeValue(forKey: object.key)
+                loopPlayer.turnOff(piece: object.key)
             }
         }
         
