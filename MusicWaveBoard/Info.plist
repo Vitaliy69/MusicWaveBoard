@@ -24,6 +24,10 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>This application uses the camera to capture images of wave game items for object recognition</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>You can use voice to select samples</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Allow AI to detect music sample wishes</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -13,6 +13,7 @@
 		FAD500A41ED668B60074D713 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD500A21ED668B60074D713 /* Main.storyboard */; };
 		FAD500A61ED668B60074D713 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAD500A51ED668B60074D713 /* Assets.xcassets */; };
 		FAD500A91ED668B60074D713 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD500A71ED668B60074D713 /* LaunchScreen.storyboard */; };
+		FE25046B29B22D0B001D791A /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25046A29B22D0B001D791A /* SpeechRecognizer.swift */; };
 		FE37572A26F8EB3D00A0BD83 /* VolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE37572926F8EB3D00A0BD83 /* VolumeView.swift */; };
 		FEA5929C26F4E6F7005B805B /* SamplesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */; };
 		FEA5929E26F4E704005B805B /* RecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929D26F4E704005B805B /* RecordsViewController.swift */; };
@@ -30,6 +31,7 @@
 		FAD500A31ED668B60074D713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FAD500A51ED668B60074D713 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAD500A81ED668B60074D713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FE25046A29B22D0B001D791A /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		FE37572926F8EB3D00A0BD83 /* VolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeView.swift; sourceTree = "<group>"; };
 		FE778A1A26F4BE760055A8CA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesViewController.swift; sourceTree = "<group>"; };
@@ -72,20 +74,53 @@
 			isa = PBXGroup;
 			children = (
 				FAD5009E1ED668B60074D713 /* AppDelegate.swift */,
-				FAD500A01ED668B60074D713 /* ViewController.swift */,
-				FAB417F52099308400494E9C /* QRObjects.swift */,
-				FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */,
-				FEA5929D26F4E704005B805B /* RecordsViewController.swift */,
-				FEA5929F26F4E70E005B805B /* SettingsViewController.swift */,
-				FE37572926F8EB3D00A0BD83 /* VolumeView.swift */,
-				FEE5FFAC2722D8B900D2BB0F /* LoopPlayer.swift */,
-				FEE5FFAA2722D45200D2BB0F /* LoopStorage.swift */,
+				FE25046C29B22DA6001D791A /* Controllers */,
+				FE25046D29B22DC1001D791A /* Views */,
+				FE25046F29B22DE3001D791A /* Helpers */,
+				FE25046E29B22DD4001D791A /* Models */,
 				FAD500A21ED668B60074D713 /* Main.storyboard */,
 				FAD500A71ED668B60074D713 /* LaunchScreen.storyboard */,
 				FAD500A51ED668B60074D713 /* Assets.xcassets */,
 				FE778A1A26F4BE760055A8CA /* Info.plist */,
 			);
 			path = MusicWaveBoard;
+			sourceTree = "<group>";
+		};
+		FE25046C29B22DA6001D791A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FAD500A01ED668B60074D713 /* ViewController.swift */,
+				FAB417F52099308400494E9C /* QRObjects.swift */,
+				FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */,
+				FEA5929D26F4E704005B805B /* RecordsViewController.swift */,
+				FEA5929F26F4E70E005B805B /* SettingsViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		FE25046D29B22DC1001D791A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FE37572926F8EB3D00A0BD83 /* VolumeView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FE25046E29B22DD4001D791A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FEE5FFAA2722D45200D2BB0F /* LoopStorage.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FE25046F29B22DE3001D791A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FEE5FFAC2722D8B900D2BB0F /* LoopPlayer.swift */,
+				FE25046A29B22D0B001D791A /* SpeechRecognizer.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,6 +202,7 @@
 				FEA592A026F4E70E005B805B /* SettingsViewController.swift in Sources */,
 				FEE5FFAB2722D45200D2BB0F /* LoopStorage.swift in Sources */,
 				FEA5929C26F4E6F7005B805B /* SamplesViewController.swift in Sources */,
+				FE25046B29B22D0B001D791A /* SpeechRecognizer.swift in Sources */,
 				FAD5009F1ED668B60074D713 /* AppDelegate.swift in Sources */,
 				FE37572A26F8EB3D00A0BD83 /* VolumeView.swift in Sources */,
 				FEA5929E26F4E704005B805B /* RecordsViewController.swift in Sources */,
