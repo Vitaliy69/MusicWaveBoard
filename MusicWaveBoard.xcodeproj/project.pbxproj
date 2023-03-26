@@ -14,6 +14,7 @@
 		FAD500A61ED668B60074D713 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAD500A51ED668B60074D713 /* Assets.xcassets */; };
 		FAD500A91ED668B60074D713 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD500A71ED668B60074D713 /* LaunchScreen.storyboard */; };
 		FE25046B29B22D0B001D791A /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25046A29B22D0B001D791A /* SpeechRecognizer.swift */; };
+		FE2D1E2329D069C700863DC6 /* SampleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2D1E2229D069C700863DC6 /* SampleTableViewCell.swift */; };
 		FE37572A26F8EB3D00A0BD83 /* VolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE37572926F8EB3D00A0BD83 /* VolumeView.swift */; };
 		FEA5929C26F4E6F7005B805B /* SamplesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */; };
 		FEA5929E26F4E704005B805B /* RecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929D26F4E704005B805B /* RecordsViewController.swift */; };
@@ -32,6 +33,7 @@
 		FAD500A51ED668B60074D713 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAD500A81ED668B60074D713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FE25046A29B22D0B001D791A /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
+		FE2D1E2229D069C700863DC6 /* SampleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleTableViewCell.swift; sourceTree = "<group>"; };
 		FE37572926F8EB3D00A0BD83 /* VolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeView.swift; sourceTree = "<group>"; };
 		FE778A1A26F4BE760055A8CA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesViewController.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */,
 				FEA5929D26F4E704005B805B /* RecordsViewController.swift */,
 				FEA5929F26F4E70E005B805B /* SettingsViewController.swift */,
+				FE2D1E2229D069C700863DC6 /* SampleTableViewCell.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE2D1E2329D069C700863DC6 /* SampleTableViewCell.swift in Sources */,
 				FAB417F62099308400494E9C /* QRObjects.swift in Sources */,
 				FAD500A11ED668B60074D713 /* ViewController.swift in Sources */,
 				FEA592A026F4E70E005B805B /* SettingsViewController.swift in Sources */,
