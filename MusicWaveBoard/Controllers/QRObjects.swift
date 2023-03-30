@@ -45,16 +45,16 @@ class QRObjects: ViewController {
         super.viewDidAppear(animated)
         
         drawTimer = Timer.scheduledTimer(timeInterval: 0.1,
-                                           target: self,
-                                           selector: #selector(drawVisibleQR),
-                                           userInfo: nil,
-                                           repeats: true)
+                                         target: self,
+                                         selector: #selector(drawVisibleQR),
+                                         userInfo: nil,
+                                         repeats: true)
         
         changeRectTimer = Timer.scheduledTimer(timeInterval: 0.2,
-                                           target: self,
-                                           selector: #selector(changeSearchRect),
-                                           userInfo: nil,
-                                           repeats: true)
+                                               target: self,
+                                               selector: #selector(changeSearchRect),
+                                               userInfo: nil,
+                                               repeats: true)
         
         
     }
@@ -222,10 +222,10 @@ class QRObjects: ViewController {
     }
     
     private func drawMenu() {
-        let record = createMenuOverlay(CGRect(x: detectionOverlay.bounds.maxX - 280,
-                                              y: detectionOverlay.bounds.maxY - 200,
-                                              width: 96,
-                                              height: 96),
+        let record = createMenuOverlay(CGRect(x: detectionOverlay.bounds.maxX - detectionOverlay.bounds.maxX / 6,
+                                              y: detectionOverlay.bounds.maxY - detectionOverlay.bounds.maxY / 7,
+                                              width: detectionOverlay.bounds.maxY / 8,
+                                              height: detectionOverlay.bounds.maxY / 8),
                                        identifier: recordName)
         
         detectionOverlay.addSublayer(record)

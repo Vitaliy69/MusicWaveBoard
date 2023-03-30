@@ -13,6 +13,7 @@
 		FAD500A41ED668B60074D713 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD500A21ED668B60074D713 /* Main.storyboard */; };
 		FAD500A61ED668B60074D713 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAD500A51ED668B60074D713 /* Assets.xcassets */; };
 		FAD500A91ED668B60074D713 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD500A71ED668B60074D713 /* LaunchScreen.storyboard */; };
+		FE1A9BAF29D5B038003C7171 /* SampleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1A9BAE29D5B038003C7171 /* SampleManager.swift */; };
 		FE25046B29B22D0B001D791A /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE25046A29B22D0B001D791A /* SpeechRecognizer.swift */; };
 		FE2D1E2329D069C700863DC6 /* SampleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2D1E2229D069C700863DC6 /* SampleTableViewCell.swift */; };
 		FE37572A26F8EB3D00A0BD83 /* VolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE37572926F8EB3D00A0BD83 /* VolumeView.swift */; };
@@ -32,6 +33,7 @@
 		FAD500A31ED668B60074D713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FAD500A51ED668B60074D713 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAD500A81ED668B60074D713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FE1A9BAE29D5B038003C7171 /* SampleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleManager.swift; sourceTree = "<group>"; };
 		FE25046A29B22D0B001D791A /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		FE2D1E2229D069C700863DC6 /* SampleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleTableViewCell.swift; sourceTree = "<group>"; };
 		FE37572926F8EB3D00A0BD83 /* VolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeView.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			children = (
 				FEE5FFAC2722D8B900D2BB0F /* LoopPlayer.swift */,
 				FE25046A29B22D0B001D791A /* SpeechRecognizer.swift */,
+				FE1A9BAE29D5B038003C7171 /* SampleManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 				FE2D1E2329D069C700863DC6 /* SampleTableViewCell.swift in Sources */,
 				FAB417F62099308400494E9C /* QRObjects.swift in Sources */,
 				FAD500A11ED668B60074D713 /* ViewController.swift in Sources */,
+				FE1A9BAF29D5B038003C7171 /* SampleManager.swift in Sources */,
 				FEA592A026F4E70E005B805B /* SettingsViewController.swift in Sources */,
 				FEE5FFAB2722D45200D2BB0F /* LoopStorage.swift in Sources */,
 				FEA5929C26F4E6F7005B805B /* SamplesViewController.swift in Sources */,
