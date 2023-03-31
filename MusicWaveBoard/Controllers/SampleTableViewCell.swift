@@ -23,7 +23,7 @@ class SampleTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let verticalSpace: CGFloat = 5.0
+        let verticalSpace: CGFloat = 1.0
         self.contentView.frame = self.contentView.frame.inset(by: UIEdgeInsets(top: verticalSpace, left: 0, bottom: verticalSpace, right: 0))
     }
 }

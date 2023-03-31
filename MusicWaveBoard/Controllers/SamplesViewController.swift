@@ -33,7 +33,7 @@ class SamplesViewController: UITableViewController {
                 let index = indexPath.row + 1
                 
                 let backgroundColor = cell.contentView.backgroundColor
-                cell.contentView.backgroundColor = UIColor.red
+                cell.contentView.backgroundColor = UIColor.blue
                 var words: String = ""
                 
                 speechRecognizer.reset()
@@ -64,12 +64,34 @@ class SamplesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SamplesCell", for: indexPath) as! SampleTableViewCell
         
-        cell.contentView.layer.cornerRadius = cell.contentView.frame.height / 4
+        cell.contentView.layer.cornerRadius = cell.contentView.frame.height / 8
         
         let index = indexPath.row + 1
         let text = String.localizedStringWithFormat("%.2d. (Holding and then speak to change)", index)
         cell.sampleLabel.text = text
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "Reset"
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let index = indexPath.row + 1
+            let text = String.localizedStringWithFormat("%.2d. (Holding and then speak to change)", index)
+            
+            let cell = tableView.cellForRow(at: indexPath) as! SampleTableViewCell
+            cell.sampleLabel.text = text
+        }
     }
 }

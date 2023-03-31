@@ -222,10 +222,11 @@ class QRObjects: ViewController {
     }
     
     private func drawMenu() {
+        let radius = detectionOverlay.bounds.maxY / 8
         let record = createMenuOverlay(CGRect(x: detectionOverlay.bounds.maxX - detectionOverlay.bounds.maxX / 6,
-                                              y: detectionOverlay.bounds.maxY - detectionOverlay.bounds.maxY / 7,
-                                              width: detectionOverlay.bounds.maxY / 8,
-                                              height: detectionOverlay.bounds.maxY / 8),
+                                              y: radius / 1.2,
+                                              width: radius,
+                                              height: radius),
                                        identifier: recordName)
         
         detectionOverlay.addSublayer(record)
