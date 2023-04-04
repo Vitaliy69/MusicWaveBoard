@@ -9,8 +9,10 @@ import UIKit
 
 class SamplesViewController: UITableViewController {
     
-    let sampleManager = SampleManager()
-    let speechRecognizer = SpeechRecognizer()
+    private let sampleManager = SampleManager()
+    private let speechRecognizer = SpeechRecognizer()
+    
+    private var lastActiveCell: SampleTableViewCell? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,17 +25,27 @@ class SamplesViewController: UITableViewController {
         tableView.addGestureRecognizer(longPress)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        if (lastActiveCell != nil) {
+            stopVoiceRecognizer()
+        }
+    }
+    
     // MARK: - Table view click events
     
     @objc private func handleLongPress(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
             let touchPoint = sender.location(in: tableView)
             if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                if (lastActiveCell != nil) {
+                    return
+                }
+                
                 let cell = tableView.cellForRow(at: indexPath) as! SampleTableViewCell
+                lastActiveCell = cell
                 let index = indexPath.row + 1
                 
-                let backgroundColor = cell.contentView.backgroundColor
-                cell.contentView.backgroundColor = UIColor.blue
+                cell.contentView.backgroundColor = UIColor.red
                 var words: String = ""
                 
                 speechRecognizer.reset()
@@ -47,8 +59,11 @@ class SamplesViewController: UITableViewController {
                 }
                 
                 Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { timer in
-                    self.speechRecognizer.stopTranscribing()
-                    cell.contentView.backgroundColor = backgroundColor
+                    if (self.lastActiveCell == nil) {
+                        return
+                    }
+                    
+                    self.stopVoiceRecognizer()
                     self.sampleManager.setKeyWords(words: words, for: index)
                 }
             }
@@ -65,6 +80,7 @@ class SamplesViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SamplesCell", for: indexPath) as! SampleTableViewCell
         
         cell.contentView.layer.cornerRadius = cell.contentView.frame.height / 8
+        cell.contentView.backgroundColor = UIColor.systemGray4
         
         let index = indexPath.row + 1
         let text = String.localizedStringWithFormat("%.2d. (Holding and then speak to change)", index)
@@ -87,11 +103,22 @@ class SamplesViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            if (lastActiveCell != nil) {
+                return
+            }
+            
             let index = indexPath.row + 1
             let text = String.localizedStringWithFormat("%.2d. (Holding and then speak to change)", index)
             
             let cell = tableView.cellForRow(at: indexPath) as! SampleTableViewCell
             cell.sampleLabel.text = text
         }
+    }
+    
+    // MARK: - Working functions
+    private func stopVoiceRecognizer() {
+        speechRecognizer.stopTranscribing()
+        lastActiveCell?.contentView.backgroundColor = UIColor.systemGray4
+        lastActiveCell = nil
     }
 }
