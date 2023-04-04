@@ -64,7 +64,7 @@ class SamplesViewController: UITableViewController {
                     }
                     
                     self.stopVoiceRecognizer()
-                    self.sampleManager.setKeyWords(words: words, for: index)
+                    let sampleKey = self.sampleManager.setKeyWords(words: words, index: index)
                 }
             }
         }

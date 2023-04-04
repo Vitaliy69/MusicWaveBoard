@@ -58,12 +58,12 @@ struct LoopStorage {
         "03": ["beat", "clap", "low", "shake"],
         "04": ["beat", "clap", "low", "slow"],
         "05": ["beat", "slowtempo", "house", "one", "two", "three"],
-        "06": ["drums", "fast", "african", "house", "lounge"],
-        "07": ["drums", "fast", "african", "rhytm"],
-        "08": ["drums", "fast", "middle", "african", "lounge"],
+        "06": ["drums", "fast", "afro", "house", "lounge"],
+        "07": ["drums", "fast", "afro", "rhytm"],
+        "08": ["drums", "fast", "middle", "afro", "lounge"],
         "09": ["drums", "fast", "rhytm", "trance", "techno", "danceable"],
         "10": ["drums", "high", "upbeat", "metal", "sound", "house"],
-        "11": ["drums", "high", "vocal", "african", "house"],
+        "11": ["drums", "high", "vocal", "afro", "house"],
         "12": ["drums", "low", "rare", "ibiza", "lounge"],
         "13": ["dynamic", "high", "sound", "high", "paced", "trance", "house", "melody", "beats", "danceable"],
         "14": ["dynamic", "high", "sound", "high", "paced", "trance", "house", "melody", "beats", "danceable"],
@@ -129,7 +129,7 @@ struct LoopStorage {
         "74": ["super", "slow", "echo", "dynamics", "high", "sound", "super", "slow", "paced", "trance", "house", "melody", "rhytm"],
         "75": ["super", "slow", "echo", "dynamics", "high", "sound", "super", "slow", "paced", "trance", "house", "melody", "rhytm"],
         "76": ["very", "fast", "rhytm", "groovy", "bass", "high", "tempo"],
-        "77": ["vocal", "glitched", "african", "woman"],
+        "77": ["vocal", "glitched", "afro", "woman"],
         "78": ["woman", "vocal", "lound", "house", "high"]
     ]
 }
