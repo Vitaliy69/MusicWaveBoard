@@ -6,13 +6,18 @@
 //
 
 import UIKit
+import AVFoundation
 
 class SamplesViewController: UITableViewController {
     
     private let sampleManager = SampleManager()
     private let speechRecognizer = SpeechRecognizer()
+    private var audioPlayer = AVAudioPlayer()
     
-    private var lastActiveCell: SampleTableViewCell? = nil
+    private var lastRecCell: SampleTableViewCell? = nil
+    private var lastPlayCell: SampleTableViewCell? = nil
+    
+    private let defaultHint = "Long tap and then speak to change..."
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,29 +26,76 @@ class SamplesViewController: UITableViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.tableFooterView = nil
         
+        let press = UITapGestureRecognizer(target: self, action: #selector(handlePress(sender:)))
+        tableView.addGestureRecognizer(press)
+        
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:)))
         tableView.addGestureRecognizer(longPress)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        if (lastActiveCell != nil) {
+        if (lastRecCell != nil) {
             stopVoiceRecognizer()
+        }
+        
+        if (lastPlayCell != nil) {
+            stopSamplePlayback()
         }
     }
     
     // MARK: - Table view click events
     
+    @objc private func handlePress(sender: UITapGestureRecognizer) {
+        let touchPoint = sender.location(in: tableView)
+        if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+            guard lastRecCell == nil else { return }
+            
+            if (lastPlayCell?.indexPath?.row == indexPath.row) {
+                stopSamplePlayback()
+                return
+            } else {
+                guard lastPlayCell == nil else { return }
+            }
+            
+            let index = indexPath.row + 1
+            
+            guard let track = SettingsManager.getTrack(index: index) else { return }
+            guard let soundFileURL = Bundle.main.url(
+                forResource: track.track,
+                withExtension: "wav",
+                subdirectory: "Samples"
+            ) else {
+                return
+            }
+            
+            do {
+                startPlayback()
+                
+                audioPlayer = try AVAudioPlayer(contentsOf: soundFileURL)
+                audioPlayer.delegate = self as AVAudioPlayerDelegate
+                
+                audioPlayer.prepareToPlay()
+                audioPlayer.play()
+                
+                let cell = tableView.cellForRow(at: indexPath) as! SampleTableViewCell
+                cell.samplePlayImageView.image = UIImage(named: "pause")
+                
+                lastPlayCell = cell
+            }
+            catch {}
+        }
+    }
+    
     @objc private func handleLongPress(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
             let touchPoint = sender.location(in: tableView)
             if let indexPath = tableView.indexPathForRow(at: touchPoint) {
-                if (lastActiveCell != nil) {
-                    return
-                }
+                guard lastRecCell == nil else { return }
+                guard lastPlayCell == nil else { return }
                 
-                let cell = tableView.cellForRow(at: indexPath) as! SampleTableViewCell
-                lastActiveCell = cell
                 let index = indexPath.row + 1
+                let cell = tableView.cellForRow(at: indexPath) as! SampleTableViewCell
+                lastRecCell = cell
                 
                 cell.contentView.backgroundColor = UIColor.red
                 var words: String = ""
@@ -59,12 +111,17 @@ class SamplesViewController: UITableViewController {
                 }
                 
                 Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { timer in
-                    if (self.lastActiveCell == nil) {
+                    if (self.lastRecCell == nil) {
                         return
                     }
                     
                     self.stopVoiceRecognizer()
-                    let sampleKey = self.sampleManager.setKeyWords(words: words, index: index)
+                    guard !words.isEmpty else { return }
+                    
+                    let track = self.sampleManager.getTrackByKeyWords(words: words, index: index)
+                    SettingsManager.setTrack(index: index, track: track, keyWords: words)
+                    
+                    cell.samplePlayImageView.isHidden = false
                 }
             }
         }
@@ -83,8 +140,18 @@ class SamplesViewController: UITableViewController {
         cell.contentView.backgroundColor = UIColor.systemGray4
         
         let index = indexPath.row + 1
-        let text = String.localizedStringWithFormat("%.2d. (Holding and then speak to change)", index)
+        let text = String.localizedStringWithFormat("%.2d. %@", index, defaultHint)
         cell.sampleLabel.text = text
+        
+        cell.samplePlayImageView.alpha = 0.5
+        if let track = SettingsManager.getTrack(index: index) {
+            let text = String.localizedStringWithFormat("%.2d. %@", index, track.keyWords)
+            cell.sampleLabel.text = text
+            
+            cell.samplePlayImageView.isHidden = false
+        } else {
+            cell.samplePlayImageView.isHidden = true
+        }
         
         return cell
     }
@@ -103,22 +170,67 @@ class SamplesViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            if (lastActiveCell != nil) {
-                return
-            }
+            guard lastRecCell == nil else { return }
+            guard lastPlayCell == nil else { return }
             
             let index = indexPath.row + 1
-            let text = String.localizedStringWithFormat("%.2d. (Holding and then speak to change)", index)
+            let text = String.localizedStringWithFormat("%.2d. %@", index, defaultHint)
             
             let cell = tableView.cellForRow(at: indexPath) as! SampleTableViewCell
             cell.sampleLabel.text = text
+            
+            cell.samplePlayImageView.isHidden = true
+            
+            SettingsManager.clearTrack(index: index)
         }
     }
     
     // MARK: - Working functions
+    private func startPlayback() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSession.Category.playback)
+            try audioSession.setMode(AVAudioSession.Mode.default)
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+        }
+        catch {}
+    }
+    
     private func stopVoiceRecognizer() {
         speechRecognizer.stopTranscribing()
-        lastActiveCell?.contentView.backgroundColor = UIColor.systemGray4
-        lastActiveCell = nil
+        lastRecCell?.contentView.backgroundColor = UIColor.systemGray4
+        lastRecCell = nil
+    }
+    
+    private func stopSamplePlayback() {
+        if (audioPlayer.isPlaying) {
+            audioPlayer.stop()
+        }
+        
+        lastPlayCell?.samplePlayImageView.image = UIImage(named: "play")
+        lastPlayCell = nil
+    }
+}
+
+extension SamplesViewController: AVAudioPlayerDelegate {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        stopSamplePlayback()
+    }
+}
+
+extension UIResponder {
+    func next<U: UIResponder>(of type: U.Type = U.self) -> U? {
+        return self.next.flatMap({ $0 as? U ?? $0.next() })
+    }
+}
+
+extension UITableViewCell {
+    var tableView: UITableView? {
+        return self.next(of: UITableView.self)
+    }
+    
+    var indexPath: IndexPath? {
+        return self.tableView?.indexPath(for: self)
     }
 }

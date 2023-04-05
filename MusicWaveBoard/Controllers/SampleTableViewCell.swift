@@ -8,9 +8,9 @@
 import UIKit
 
 class SampleTableViewCell: UITableViewCell {
-
     
     @IBOutlet weak var sampleImageView: UIImageView!
+    @IBOutlet weak var samplePlayImageView: UIImageView!
     @IBOutlet weak var sampleLabel: UILabel!
     
     override func awakeFromNib() {

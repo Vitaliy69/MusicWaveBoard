@@ -20,12 +20,20 @@ class ViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.viewControllers?.remove(at: 3)
+        tabBarController?.viewControllers?.remove(at: 2)
         
         UIApplication.shared.isIdleTimerDisabled = true
         setupAVCapture()
-        
-        loopPlayer.initDemo()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        loopPlayer.preparePlayer()
         loopPlayer.start()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        loopPlayer.stop()
     }
     
     func setupAVCapture() {

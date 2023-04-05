@@ -9,7 +9,7 @@ import Foundation
 
 class SampleManager {
     
-    func setKeyWords(words: String, index: Int) -> String {
+    func getTrackByKeyWords(words: String, index: Int) -> String {
         let keyWords = words.lowercased().components(separatedBy: " ")
         return findBestСoincidence(keyWords: keyWords)
     }

@@ -26,7 +26,8 @@ class LoopPlayer {
     private let maxDb: Float = 0
     private let minDb: Float = -96
     
-    func initDemo() {
+    func preparePlayer() {
+        startPlayback()
         
         for (key, value) in LoopStorage.loopNames {
             guard let filePath = Bundle.main.path(forResource: value, ofType: "wav", inDirectory: "Loops") else { continue }
@@ -36,7 +37,6 @@ class LoopPlayer {
                 let audioFile = try AVAudioFile(forReading: fileURL)
                 audioFiles[key] = audioFile
                 
-     
                 let audioUnit = AVAudioUnitEQ()
                 audioUnits[key] = audioUnit
                 audioEngine.attach(audioUnit)
@@ -44,11 +44,10 @@ class LoopPlayer {
                 let audioPlayer = AVAudioPlayerNode()
                 audioPlayers[key] = audioPlayer
                 audioEngine.attach(audioPlayer)
-        
-
+                
                 audioEngine.connect(audioPlayer, to: audioUnit, format: nil)
                 audioEngine.connect(audioUnit, to: audioEngine.mainMixerNode, format: nil)
-
+                
             } catch {
                 print(error)
             }
@@ -74,10 +73,14 @@ class LoopPlayer {
         }
     }
     
+    func stop() {
+        audioEngine.stop()
+    }
+    
     private func loopWholeFile(file: AVAudioFile, player: AVAudioPlayerNode) -> Latch {
         let looping = Latch()
         let frames = file.length
-
+        
         let sampleRate = file.processingFormat.sampleRate
         var segmentTime: AVAudioFramePosition = 0
         var segmentCompletion: AVAudioNodeCompletionHandler!
@@ -91,14 +94,25 @@ class LoopPlayer {
         segmentCompletion()
         player.prepare(withFrameCount: UInt32(frames))
         player.play()
-
+        
         return looping
+    }
+    
+    private func startPlayback() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSession.Category.playback)
+            try audioSession.setMode(AVAudioSession.Mode.default)
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+        }
+        catch {}
     }
 }
 
 
 extension LoopPlayer {
-
+    
     func turnOn(piece: String) {
         
         if let item = fadeOutMap[piece] {
@@ -160,7 +174,7 @@ extension LoopPlayer {
     }
     
     private func setVolume(_ value: Float) -> Float {
-
+        
         if value < 1 {
             return minDb
         }
@@ -168,7 +182,7 @@ extension LoopPlayer {
         if (value > 99) {
             return maxDb
         }
-
+        
         return 48.0 * log10f(value / 100)
     }
     

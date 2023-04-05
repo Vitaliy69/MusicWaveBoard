@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="X90-Dl-AJM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="X90-Dl-AJM">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -115,7 +115,7 @@
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3m5-iL-b9X">
                                             <rect key="frame" x="78" y="11" width="316" height="50.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -126,13 +126,22 @@
                                                 <constraint firstAttribute="height" constant="50" id="weq-hf-e4w"/>
                                             </constraints>
                                         </imageView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" translatesAutoresizingMaskIntoConstraints="NO" id="Xrw-tk-OJO">
+                                            <rect key="frame" x="35" y="26.5" width="20" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="20" id="NqJ-cc-cC9"/>
+                                                <constraint firstAttribute="height" constant="20" id="hCg-nk-p8l"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" systemColor="systemGray4Color"/>
                                     <constraints>
                                         <constraint firstItem="3m5-iL-b9X" firstAttribute="top" secondItem="UvH-Nu-Ejf" secondAttribute="topMargin" id="78D-4y-X59"/>
                                         <constraint firstItem="zlO-JI-jgM" firstAttribute="top" secondItem="UvH-Nu-Ejf" secondAttribute="topMargin" id="GAx-Rc-XLl"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="3m5-iL-b9X" secondAttribute="bottom" id="GoA-ce-P3Z"/>
+                                        <constraint firstItem="Xrw-tk-OJO" firstAttribute="centerY" secondItem="zlO-JI-jgM" secondAttribute="centerY" id="Hfr-R0-AmG"/>
                                         <constraint firstItem="3m5-iL-b9X" firstAttribute="leading" secondItem="zlO-JI-jgM" secondAttribute="trailing" constant="8" id="PqP-Id-7G3"/>
+                                        <constraint firstItem="Xrw-tk-OJO" firstAttribute="centerX" secondItem="zlO-JI-jgM" secondAttribute="centerX" id="V2j-pY-C6W"/>
                                         <constraint firstItem="3m5-iL-b9X" firstAttribute="trailing" secondItem="UvH-Nu-Ejf" secondAttribute="trailingMargin" id="YQA-nS-4JN"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="zlO-JI-jgM" secondAttribute="bottom" id="bub-Xg-c5f"/>
                                         <constraint firstItem="zlO-JI-jgM" firstAttribute="leading" secondItem="UvH-Nu-Ejf" secondAttribute="leadingMargin" id="fYo-L4-pfm"/>
@@ -141,6 +150,7 @@
                                 <connections>
                                     <outlet property="sampleImageView" destination="zlO-JI-jgM" id="Fjg-zK-Z1d"/>
                                     <outlet property="sampleLabel" destination="3m5-iL-b9X" id="aIi-6H-s0b"/>
+                                    <outlet property="samplePlayImageView" destination="Xrw-tk-OJO" id="aDe-Zg-gUf"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -222,6 +232,7 @@
         <image name="gear" catalog="system" width="128" height="122"/>
         <image name="mic" catalog="system" width="110" height="128"/>
         <image name="music.note.list" catalog="system" width="128" height="115"/>
+        <image name="play" width="100" height="100"/>
         <image name="waveform.path.ecg" catalog="system" width="128" height="125"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
