@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16BFBA6729DED4D60022EE17 /* AVHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BFBA6629DED4D60022EE17 /* AVHelper.swift */; };
 		FAB417F62099308400494E9C /* QRObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB417F52099308400494E9C /* QRObjects.swift */; };
 		FAD5009F1ED668B60074D713 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD5009E1ED668B60074D713 /* AppDelegate.swift */; };
 		FAD500A11ED668B60074D713 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD500A01ED668B60074D713 /* ViewController.swift */; };
@@ -20,7 +21,6 @@
 		FEA5929C26F4E6F7005B805B /* SamplesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */; };
 		FEA5929E26F4E704005B805B /* RecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929D26F4E704005B805B /* RecordsViewController.swift */; };
 		FEA592A026F4E70E005B805B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA5929F26F4E70E005B805B /* SettingsViewController.swift */; };
-		FEE5FFA92722D1D800D2BB0F /* Loops in Resources */ = {isa = PBXBuildFile; fileRef = FEE5FFA82722D1D800D2BB0F /* Loops */; };
 		FEE5FFAB2722D45200D2BB0F /* LoopStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE5FFAA2722D45200D2BB0F /* LoopStorage.swift */; };
 		FEE5FFAD2722D8B900D2BB0F /* LoopPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE5FFAC2722D8B900D2BB0F /* LoopPlayer.swift */; };
 		FEF678BC29DDEB5700088B78 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF678BB29DDEB5700088B78 /* SettingsManager.swift */; };
@@ -28,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		16BFBA6629DED4D60022EE17 /* AVHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVHelper.swift; sourceTree = "<group>"; };
 		FAB417F52099308400494E9C /* QRObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRObjects.swift; sourceTree = "<group>"; };
 		FAD5009B1ED668B60074D713 /* MusicWaveBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicWaveBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAD5009E1ED668B60074D713 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,7 +44,6 @@
 		FEA5929B26F4E6F7005B805B /* SamplesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesViewController.swift; sourceTree = "<group>"; };
 		FEA5929D26F4E704005B805B /* RecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsViewController.swift; sourceTree = "<group>"; };
 		FEA5929F26F4E70E005B805B /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		FEE5FFA82722D1D800D2BB0F /* Loops */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Loops; sourceTree = "<group>"; };
 		FEE5FFAA2722D45200D2BB0F /* LoopStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopStorage.swift; sourceTree = "<group>"; };
 		FEE5FFAC2722D8B900D2BB0F /* LoopPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopPlayer.swift; sourceTree = "<group>"; };
 		FEF678BB29DDEB5700088B78 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
@@ -65,7 +65,6 @@
 			isa = PBXGroup;
 			children = (
 				FEF678C029DE02BC00088B78 /* Samples */,
-				FEE5FFA82722D1D800D2BB0F /* Loops */,
 				FAD5009D1ED668B60074D713 /* MusicWaveBoard */,
 				FAD5009C1ED668B60074D713 /* Products */,
 			);
@@ -131,6 +130,7 @@
 				FE25046A29B22D0B001D791A /* SpeechRecognizer.swift */,
 				FE1A9BAE29D5B038003C7171 /* SampleManager.swift */,
 				FEF678BB29DDEB5700088B78 /* SettingsManager.swift */,
+				16BFBA6629DED4D60022EE17 /* AVHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -199,7 +199,6 @@
 				FEF678C129DE02BC00088B78 /* Samples in Resources */,
 				FAD500A91ED668B60074D713 /* LaunchScreen.storyboard in Resources */,
 				FAD500A61ED668B60074D713 /* Assets.xcassets in Resources */,
-				FEE5FFA92722D1D800D2BB0F /* Loops in Resources */,
 				FAD500A41ED668B60074D713 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -217,6 +216,7 @@
 				FAD500A11ED668B60074D713 /* ViewController.swift in Sources */,
 				FE1A9BAF29D5B038003C7171 /* SampleManager.swift in Sources */,
 				FEA592A026F4E70E005B805B /* SettingsViewController.swift in Sources */,
+				16BFBA6729DED4D60022EE17 /* AVHelper.swift in Sources */,
 				FEE5FFAB2722D45200D2BB0F /* LoopStorage.swift in Sources */,
 				FEA5929C26F4E6F7005B805B /* SamplesViewController.swift in Sources */,
 				FE25046B29B22D0B001D791A /* SpeechRecognizer.swift in Sources */,

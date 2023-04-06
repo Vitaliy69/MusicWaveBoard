@@ -9,12 +9,25 @@ import Foundation
 
 class SampleManager {
     
-    func getTrackByKeyWords(words: String, index: Int) -> String {
+    static func getTrackByKeyWords(words: String, index: Int) -> String {
         let keyWords = words.lowercased().components(separatedBy: " ")
         return findBestСoincidence(keyWords: keyWords)
     }
     
-    private func findBestСoincidence(keyWords: [String]) -> String {
+    static func getInstrumentLabel(index: Int) -> String {
+        switch (index) {
+        case 1..<7:
+            return "Voc"
+        case 7..<13:
+            return "Drum"
+        case 13..<19:
+            return "Guit"
+        default:
+            return "Key"
+        }
+    }
+    
+    private static func findBestСoincidence(keyWords: [String]) -> String {
         var result = [String: Int]()
         
         LoopStorage.loopTags.forEach { (key: String, value: [String]) in

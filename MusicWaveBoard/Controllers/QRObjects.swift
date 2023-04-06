@@ -10,7 +10,7 @@ import AVFoundation
 
 class QRObjects: ViewController {
     
-    @IBOutlet var volumeView: UIView!
+    @IBOutlet var volumeView: VolumeView!
     
     private var detectionOverlay: CALayer! = nil
     
@@ -22,6 +22,8 @@ class QRObjects: ViewController {
     
     private var lastSeenPiece = [String: (bounds: CGRect, timestamp: Int)]()
     private let aliveTimeMs = 2500
+    
+    private var volumeViewIsVisible = false
     
     private var searchRectNum = 0
     private let searchRects = [ CGRect(x: 0, y: 0, width: 0.33, height: 1),
@@ -38,7 +40,9 @@ class QRObjects: ViewController {
         drawMenu()
         updateLayerGeometry()
         
-        session.startRunning()
+        DispatchQueue.global(qos: .background).async {
+            self.session.startRunning()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -91,6 +95,7 @@ class QRObjects: ViewController {
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         
+        guard volumeViewIsVisible == false else { return }
         updateVisibleQR(metadataObjects: metadataObjects)
     }
     
@@ -137,6 +142,18 @@ class QRObjects: ViewController {
         let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
         
         let volume = UIAlertAction(title: "Volume", style: .default, handler: { (UIAlertAction) in
+            self.lastSeenPiece.forEach { (key: String, _: (bounds: CGRect, timestamp: Int)) in
+                self.loopPlayer.turnOff(piece: key)
+            }
+            self.lastSeenPiece.removeAll()
+            
+            self.volumeViewIsVisible = true
+            self.volumeView.completed = {
+                self.volumeViewIsVisible = false
+            }
+            
+            self.volumeView.setCurrentIndex(index: title)
+            
             self.volumeView.center = self.view.center
             self.volumeView.alpha = 0.8
             self.volumeView.transform = CGAffineTransform(scaleX: 0.8, y: 1.2)
@@ -149,15 +166,25 @@ class QRObjects: ViewController {
         volume.setValue(UIImage(systemName: "speaker.wave.3.fill"), forKey: "image")
         alert.addAction(volume)
         
-        let mute = UIAlertAction(title: "Mute", style: .destructive, handler: { (UIAlertAction) in
+        let index = Int(title)!
+        let muted = SettingsManager.getVolume(index: index) == 0 ? true : false
+        let mute = UIAlertAction(title: muted ? "Unmute" : "Mute",
+                                 style: .destructive,
+                                 handler: { (UIAlertAction) in
             
+            self.loopPlayer.turnOff(piece: title)
+            self.lastSeenPiece.removeValue(forKey: title)
+            
+            if (muted) {
+                SettingsManager.setVolume(index: index, volume: 100)
+            } else {
+                SettingsManager.setVolume(index: index, volume: 0)
+            }
         })
         mute.setValue(UIImage(systemName: "speaker.slash.fill"), forKey: "image")
         alert.addAction(mute)
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (UIAlertAction) in
-            
-        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (UIAlertAction) in }))
         
         alert.popoverPresentationController?.sourceView = self.view
         
@@ -197,7 +224,7 @@ class QRObjects: ViewController {
         shapeLayer.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.8).cgColor
         shapeLayer.cornerRadius = 32
         
-        let myImage = UIImage(named: "Guit")?.cgImage
+        let myImage = UIImage(named: SampleManager.getInstrumentLabel(index: Int(identifier) ?? 1))?.cgImage
         shapeLayer.contents = myImage
         
         // rotate the layer into screen orientation and scale

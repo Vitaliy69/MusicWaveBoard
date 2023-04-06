@@ -10,7 +10,6 @@ import AVFoundation
 
 class SamplesViewController: UITableViewController {
     
-    private let sampleManager = SampleManager()
     private let speechRecognizer = SpeechRecognizer()
     private var audioPlayer = AVAudioPlayer()
     
@@ -69,7 +68,7 @@ class SamplesViewController: UITableViewController {
             }
             
             do {
-                startPlayback()
+                AVHelper.prepareAudioSession(category: AVAudioSession.Category.playback)
                 
                 audioPlayer = try AVAudioPlayer(contentsOf: soundFileURL)
                 audioPlayer.delegate = self as AVAudioPlayerDelegate
@@ -118,7 +117,7 @@ class SamplesViewController: UITableViewController {
                     self.stopVoiceRecognizer()
                     guard !words.isEmpty else { return }
                     
-                    let track = self.sampleManager.getTrackByKeyWords(words: words, index: index)
+                    let track = SampleManager.getTrackByKeyWords(words: words, index: index)
                     SettingsManager.setTrack(index: index, track: track, keyWords: words)
                     
                     cell.samplePlayImageView.isHidden = false
@@ -142,6 +141,8 @@ class SamplesViewController: UITableViewController {
         let index = indexPath.row + 1
         let text = String.localizedStringWithFormat("%.2d. %@", index, defaultHint)
         cell.sampleLabel.text = text
+        
+        cell.sampleImageView.image = UIImage(named: SampleManager.getInstrumentLabel(index: indexPath.row + 1))
         
         cell.samplePlayImageView.alpha = 0.5
         if let track = SettingsManager.getTrack(index: index) {
@@ -186,17 +187,6 @@ class SamplesViewController: UITableViewController {
     }
     
     // MARK: - Working functions
-    private func startPlayback() {
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(AVAudioSession.Category.playback)
-            try audioSession.setMode(AVAudioSession.Mode.default)
-            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-        }
-        catch {}
-    }
-    
     private func stopVoiceRecognizer() {
         speechRecognizer.stopTranscribing()
         lastRecCell?.contentView.backgroundColor = UIColor.systemGray4

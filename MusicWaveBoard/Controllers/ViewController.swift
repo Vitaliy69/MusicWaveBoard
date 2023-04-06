@@ -28,7 +28,6 @@ class ViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        loopPlayer.preparePlayer()
         loopPlayer.start()
     }
     

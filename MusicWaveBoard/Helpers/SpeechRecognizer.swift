@@ -64,7 +64,7 @@ class SpeechRecognizer: ObservableObject {
                 return
             }
             
-            startRecognise()
+            AVHelper.prepareAudioSession(category: AVAudioSession.Category.record)
             
             do {
                 let (audioEngine, request) = try Self.prepareEngine()
@@ -88,17 +88,6 @@ class SpeechRecognizer: ObservableObject {
         audioEngine = nil
         request = nil
         task = nil
-    }
-    
-    private func startRecognise() {
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(AVAudioSession.Category.playAndRecord)
-            try audioSession.setMode(AVAudioSession.Mode.default)
-            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-        }
-        catch {}
     }
     
     private static func prepareEngine() throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {

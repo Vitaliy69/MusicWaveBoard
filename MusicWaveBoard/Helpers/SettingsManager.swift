@@ -38,4 +38,18 @@ class SettingsManager {
     static func clearTrack(index: Int) {
         UserDefaults.standard.removeObject(forKey: String(index))
     }
+    
+    static func setVolume(index: Int, volume: Int) {
+        let defaults = UserDefaults.standard
+        let key = "volume_" + String(index)
+        defaults.set(volume, forKey: key)
+    }
+    
+    static func getVolume(index: Int) -> Int {
+        let defaults = UserDefaults.standard
+        let key = "volume_" + String(index)
+        
+        let volume = defaults.object(forKey: key) as? Int ?? 100
+        return volume
+    }
 }

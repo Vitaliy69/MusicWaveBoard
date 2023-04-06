@@ -26,11 +26,34 @@ class LoopPlayer {
     private let maxDb: Float = 0
     private let minDb: Float = -96
     
-    func preparePlayer() {
-        startPlayback()
+    private let tracks = 1..<25
+    
+    func start() {
+        AVHelper.prepareAudioSession(category: AVAudioSession.Category.playback)
+        preparePlayer()
         
-        for (key, value) in LoopStorage.loopNames {
-            guard let filePath = Bundle.main.path(forResource: value, ofType: "wav", inDirectory: "Loops") else { continue }
+        for index in tracks {
+            let key = String.localizedStringWithFormat("%.2d", index)
+            
+            guard audioPlayers[key] != nil, audioUnits[key] != nil, audioFiles[key] != nil else { continue }
+            
+            let looping = loopWholeFile(file: audioFiles[key]!, player: audioPlayers[key]!)
+            looping.value = true
+            
+            audioUnits[key]!.globalGain = minDb
+        }
+    }
+    
+    func stop() {
+        audioEngine.stop()
+    }
+    
+    private func preparePlayer() {
+        for index in tracks {
+            let key = String.localizedStringWithFormat("%.2d", index)
+            let track = SettingsManager.getTrack(index: index)?.track
+            guard track != nil else { continue }
+            guard let filePath = Bundle.main.path(forResource: track, ofType: "wav", inDirectory: "Samples") else { continue }
             
             let fileURL = URL(fileURLWithPath: filePath)
             do {
@@ -60,23 +83,6 @@ class LoopPlayer {
         }
     }
     
-    func start() {
-        
-        for (key, _) in LoopStorage.loopNames {
-            
-            guard audioPlayers[key] != nil, audioUnits[key] != nil, audioFiles[key] != nil else { continue }
-            
-            let looping = loopWholeFile(file: audioFiles[key]!, player: audioPlayers[key]!)
-            looping.value = true
-            
-            audioUnits[key]!.globalGain = minDb
-        }
-    }
-    
-    func stop() {
-        audioEngine.stop()
-    }
-    
     private func loopWholeFile(file: AVAudioFile, player: AVAudioPlayerNode) -> Latch {
         let looping = Latch()
         let frames = file.length
@@ -97,23 +103,14 @@ class LoopPlayer {
         
         return looping
     }
-    
-    private func startPlayback() {
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(AVAudioSession.Category.playback)
-            try audioSession.setMode(AVAudioSession.Mode.default)
-            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-        }
-        catch {}
-    }
 }
 
 
 extension LoopPlayer {
     
     func turnOn(piece: String) {
+        let volume = SettingsManager.getVolume(index: Int(piece) ?? 100)
+        guard volume > 0 else { return }
         
         if let item = fadeOutMap[piece] {
             item.cancel()
@@ -124,7 +121,7 @@ extension LoopPlayer {
                 let start = self.getVolume(unitEQ.globalGain)
                 let coef = Float(1) - start / Float(100)
                 
-                for i in stride(from: start, through: 100, by: 1) {
+                for i in stride(from: Int(start), through: volume, by: 1) {
                     unitEQ.globalGain = self.setVolume(Float(i))
                     let time = TimeInterval(self.fadeSecs * coef / Float(100))
                     Thread.sleep(forTimeInterval: time)
@@ -144,6 +141,8 @@ extension LoopPlayer {
     }
     
     func turnOff(piece: String) {
+        let volume = SettingsManager.getVolume(index: Int(piece) ?? 100)
+        guard volume > 0 else { return }
         
         if let item = fadeInMap[piece] {
             item.cancel()
@@ -154,7 +153,7 @@ extension LoopPlayer {
                 let start = self.getVolume(unitEQ.globalGain)
                 let coef = start / Float(100)
                 
-                for i in stride(from: start, through: 0, by: -1) {
+                for i in stride(from: volume, through: 0, by: -1) {
                     unitEQ.globalGain = self.setVolume(Float(i))
                     let time = TimeInterval(self.fadeSecs * coef / Float(100))
                     Thread.sleep(forTimeInterval: time)
