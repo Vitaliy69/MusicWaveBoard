@@ -23,8 +23,6 @@ class QRObjects: ViewController {
     private var lastSeenPiece = [String: (bounds: CGRect, timestamp: Int)]()
     private let aliveTimeMs = 2500
     
-    private var volumeViewIsVisible = false
-    
     private var searchRectNum = 0
     private let searchRects = [ CGRect(x: 0, y: 0, width: 0.33, height: 1),
                                 CGRect(x: 0.165, y: 0, width: 0.33, height: 1),
@@ -95,7 +93,6 @@ class QRObjects: ViewController {
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         
-        guard volumeViewIsVisible == false else { return }
         updateVisibleQR(metadataObjects: metadataObjects)
     }
     
@@ -140,16 +137,12 @@ class QRObjects: ViewController {
     
     private func showGameChipActions(title: String) {
         let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
+        let index = Int(title)!
         
         let volume = UIAlertAction(title: "Volume", style: .default, handler: { (UIAlertAction) in
-            self.lastSeenPiece.forEach { (key: String, _: (bounds: CGRect, timestamp: Int)) in
-                self.loopPlayer.turnOff(piece: key)
-            }
-            self.lastSeenPiece.removeAll()
-            
-            self.volumeViewIsVisible = true
             self.volumeView.completed = {
-                self.volumeViewIsVisible = false
+                let volume = SettingsManager.getVolume(index: index)
+                self.loopPlayer.updateVolue(index: title, value: volume)
             }
             
             self.volumeView.setCurrentIndex(index: title)
@@ -166,19 +159,19 @@ class QRObjects: ViewController {
         volume.setValue(UIImage(systemName: "speaker.wave.3.fill"), forKey: "image")
         alert.addAction(volume)
         
-        let index = Int(title)!
         let muted = SettingsManager.getVolume(index: index) == 0 ? true : false
         let mute = UIAlertAction(title: muted ? "Unmute" : "Mute",
                                  style: .destructive,
                                  handler: { (UIAlertAction) in
             
-            self.loopPlayer.turnOff(piece: title)
-            self.lastSeenPiece.removeValue(forKey: title)
-            
             if (muted) {
-                SettingsManager.setVolume(index: index, volume: 100)
+                let volume = 100
+                SettingsManager.setVolume(index: index, volume: volume)
+                self.loopPlayer.updateVolue(index: title, value: volume)
             } else {
-                SettingsManager.setVolume(index: index, volume: 0)
+                let volume = 0
+                SettingsManager.setVolume(index: index, volume: volume)
+                self.loopPlayer.updateVolue(index: title, value: volume)
             }
         })
         mute.setValue(UIImage(systemName: "speaker.slash.fill"), forKey: "image")
@@ -249,14 +242,14 @@ class QRObjects: ViewController {
     }
     
     private func drawMenu() {
-        let radius = detectionOverlay.bounds.maxY / 8
-        let record = createMenuOverlay(CGRect(x: detectionOverlay.bounds.maxX - detectionOverlay.bounds.maxX / 6,
-                                              y: radius / 1.2,
-                                              width: radius,
-                                              height: radius),
-                                       identifier: recordName)
-        
-        detectionOverlay.addSublayer(record)
+        //        let radius = detectionOverlay.bounds.maxY / 8
+        //        let record = createMenuOverlay(CGRect(x: detectionOverlay.bounds.maxX - detectionOverlay.bounds.maxX / 6,
+        //                                              y: radius / 1.2,
+        //                                              width: radius,
+        //                                              height: radius),
+        //                                       identifier: recordName)
+        //
+        //        detectionOverlay.addSublayer(record)
     }
     
     private func updateVisibleQR(metadataObjects: [AVMetadataObject]) {
@@ -290,10 +283,10 @@ class QRObjects: ViewController {
                 
                 shapeLayer.addSublayer(textLayer)
                 detectionOverlay.addSublayer(shapeLayer)
-                loopPlayer.turnOn(piece: object.key)
+                loopPlayer.turnOn(index: object.key)
             } else {
                 lastSeenPiece.removeValue(forKey: object.key)
-                loopPlayer.turnOff(piece: object.key)
+                loopPlayer.turnOff(index: object.key)
             }
         }
         

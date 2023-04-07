@@ -108,16 +108,16 @@ class LoopPlayer {
 
 extension LoopPlayer {
     
-    func turnOn(piece: String) {
-        let volume = SettingsManager.getVolume(index: Int(piece) ?? 100)
+    func turnOn(index: String) {
+        let volume = SettingsManager.getVolume(index: Int(index) ?? 100)
         guard volume > 0 else { return }
         
-        if let item = fadeOutMap[piece] {
+        if let item = fadeOutMap[index] {
             item.cancel()
         }
         
         let item = DispatchWorkItem {
-            if let unitEQ = self.audioUnits[piece] {
+            if let unitEQ = self.audioUnits[index] {
                 let start = self.getVolume(unitEQ.globalGain)
                 let coef = Float(1) - start / Float(100)
                 
@@ -127,29 +127,29 @@ extension LoopPlayer {
                     Thread.sleep(forTimeInterval: time)
                 }
                 
-                if self.fadeInMap[piece] != nil {
-                    self.fadeInMap[piece]?.cancel()
-                    self.fadeInMap.removeValue(forKey: piece)
+                if self.fadeInMap[index] != nil {
+                    self.fadeInMap[index]?.cancel()
+                    self.fadeInMap.removeValue(forKey: index)
                 }
             }
         }
         
-        if fadeInMap[piece] == nil, audioUnits[piece]?.globalGain != maxDb {
-            fadeInMap[piece] = item
+        if fadeInMap[index] == nil, audioUnits[index]?.globalGain != maxDb {
+            fadeInMap[index] = item
             DispatchQueue.global().async(execute: item)
         }
     }
     
-    func turnOff(piece: String) {
-        let volume = SettingsManager.getVolume(index: Int(piece) ?? 100)
+    func turnOff(index: String) {
+        let volume = SettingsManager.getVolume(index: Int(index) ?? 100)
         guard volume > 0 else { return }
         
-        if let item = fadeInMap[piece] {
+        if let item = fadeInMap[index] {
             item.cancel()
         }
         
         let item = DispatchWorkItem {
-            if let unitEQ = self.audioUnits[piece] {
+            if let unitEQ = self.audioUnits[index] {
                 let start = self.getVolume(unitEQ.globalGain)
                 let coef = start / Float(100)
                 
@@ -159,17 +159,26 @@ extension LoopPlayer {
                     Thread.sleep(forTimeInterval: time)
                 }
                 
-                if self.fadeOutMap[piece] != nil {
-                    self.fadeOutMap[piece]?.cancel()
-                    self.fadeOutMap.removeValue(forKey: piece)
+                if self.fadeOutMap[index] != nil {
+                    self.fadeOutMap[index]?.cancel()
+                    self.fadeOutMap.removeValue(forKey: index)
                 }
             }
         }
         
-        if fadeOutMap[piece] == nil, audioUnits[piece]?.globalGain != minDb {
-            fadeOutMap[piece] = item
+        if fadeOutMap[index] == nil, audioUnits[index]?.globalGain != minDb {
+            fadeOutMap[index] = item
             DispatchQueue.global().async(execute: item)
         }
+    }
+    
+    func updateVolue(index: String, value: Int) {
+        let item = DispatchWorkItem {
+            if let unitEQ = self.audioUnits[index] {
+                unitEQ.globalGain = self.setVolume(Float(value))
+            }
+        }
+        DispatchQueue.global().async(execute: item)
     }
     
     private func setVolume(_ value: Float) -> Float {
