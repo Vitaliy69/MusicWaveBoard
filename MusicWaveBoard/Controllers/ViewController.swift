@@ -38,7 +38,7 @@ class ViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     func setupAVCapture() {
         let videoDevice = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera],
                                                            mediaType: .video,
-                                                           position: .back).devices.first
+                                                           position: .front).devices.first
         
         do {
             try videoDevice?.lockForConfiguration()
