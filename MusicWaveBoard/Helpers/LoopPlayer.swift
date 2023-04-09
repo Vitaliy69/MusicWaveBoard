@@ -77,7 +77,9 @@ class LoopPlayer {
         }
         
         do {
-            try audioEngine.start()
+            if (!audioEngine.attachedNodes.isEmpty) {
+                try audioEngine.start()
+            }
         } catch {
             print(error)
         }
