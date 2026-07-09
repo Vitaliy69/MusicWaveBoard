@@ -3,11 +3,9 @@
 ![Top language](https://img.shields.io/github/languages/top/Vitaliy69/MusicWaveBoard)
 ![Code size](https://img.shields.io/github/languages/code-size/Vitaliy69/MusicWaveBoard)
 ![Last commit](https://img.shields.io/github/last-commit/Vitaliy69/MusicWaveBoard)
-![License](https://img.shields.io/github/license/Vitaliy69/MusicWaveBoard?style=flat)
+![License](https://img.shields.io/github/license/Vitaliy69/MusicWaveBoard)
 
 **MusicWaveBoard** is an iOS app that turns physical QR-coded chips into a musical instrument. The app scans QR codes on chips placed on a table using the front camera and automatically triggers corresponding audio loops. It supports up to 5–6 chips simultaneously, each with its own beat, individual volume, and smooth transitions.
-
-[Читать на русском](README.ru.md)
 
 ## 🎬 Demo
 
