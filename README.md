@@ -9,8 +9,8 @@
 
 ## 🎬 Demo
 
-- 📹 [App demo](https://drive.google.com/file/d/1kKl8WViDsABscaEPQBH_aUzBn8eudEpu/view?usp=sharing)
-- 📹 [Screen recording](https://drive.google.com/file/d/1bx66G-Ro244h5lCyG6-0JYU0W2QupZZA/view?usp=sharing)
+- 📹 [App demo](https://www.youtube.com/watch?v=lSdb8hpyGrU)
+- 📹 [Screen recording](https://www.youtube.com/watch?v=z-kaOTvW-gg)
 
 ## 🧩 How It Works
 
