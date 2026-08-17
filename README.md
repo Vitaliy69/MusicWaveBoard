@@ -93,7 +93,7 @@ Instrument categories (by icons):
 | **Xcode** | 14.0+ |
 | **iOS** | 13.0+ |
 | **Swift** | 5.0 |
-| **Device** | iPhone / iPad (armv7+) |
+| **Device** | iPhone / iPad (arm64) |
 | **Camera** | Front-facing (required) |
 | **Microphone** | For voice control (optional) |
 | **Speech Recognition** | Requires permission (optional) |
