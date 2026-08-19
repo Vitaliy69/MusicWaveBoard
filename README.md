@@ -7,6 +7,8 @@
 
 **MusicWaveBoard** is an iOS app that turns physical QR-coded chips into a musical instrument. The app scans QR codes on chips placed on a table using the front camera and automatically triggers corresponding audio loops. It supports up to 5–6 chips simultaneously, each with its own beat, individual volume, and smooth transitions.
 
+**Key numbers:** 24 mixer tracks on a single AVAudioEngine; a full scan sweep across six rotating regions takes 1.2 s (0.2 s per region); a chip stays "alive" for 2.5 s after its last sighting, so a hand passing over the board never cuts the music.
+
 ## 🎬 Demo
 
 - 📹 [App demo](https://www.youtube.com/watch?v=lSdb8hpyGrU)
